@@ -1,0 +1,153 @@
+# 🏆 CryptoLeague — Guida Completa per Non Sviluppatori
+# Tempo stimato: 30-40 minuti
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PANORAMICA: COSA USEREMO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• GitHub   → dove salviamo il codice (gratuito)
+• Supabase → il database che salva tutti i dati (gratuito)
+• Vercel   → pubblica il sito online (gratuito)
+
+Tutti e tre sono gratuiti per questo tipo di progetto.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PASSO 1 — CREA UN ACCOUNT GITHUB E CARICA IL CODICE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Vai su https://github.com
+2. Clicca "Sign up" in alto a destra
+3. Inserisci email, password, username → conferma email
+4. Dopo il login, clicca il "+" in alto a destra → "New repository"
+5. Nel campo "Repository name" scrivi: cryptoleague
+6. Lascia tutto il resto com'è → clicca "Create repository"
+
+Ora scarica GitHub Desktop per caricare i file facilmente:
+7. Vai su https://desktop.github.com → scarica e installa
+8. Apri GitHub Desktop → accedi con il tuo account GitHub
+9. Clicca "Clone a repository" → seleziona "cryptoleague"
+10. Scegli una cartella sul tuo PC → clicca "Clone"
+11. Apri quella cartella sul tuo PC
+12. Copia dentro TUTTI i file di questa cartella (cryptoleague3)
+    Devi vedere: src/, index.html, package.json, vite.config.js, ecc.
+13. Torna su GitHub Desktop
+14. Vedrai i file elencati a sinistra → scrivi "primo caricamento" nel campo "Summary"
+15. Clicca "Commit to main" → poi clicca "Push origin"
+
+✅ Il codice è ora su GitHub!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PASSO 2 — CREA IL DATABASE SU SUPABASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Vai su https://supabase.com
+2. Clicca "Start your project" → accedi con GitHub (più semplice)
+3. Clicca "New project"
+4. Scegli un nome: cryptoleague
+5. Inserisci una password per il database (annotala, anche se non ti servirà spesso)
+6. Scegli la regione più vicina (es. "West EU")
+7. Clicca "Create new project" → aspetta 1-2 minuti
+
+CREA LE TABELLE DEL DATABASE:
+8. Nel menu a sinistra clicca "SQL Editor"
+9. Clicca "New query"
+10. Apri il file SUPABASE_SQL.sql con il Blocco Note (o TextEdit su Mac)
+11. Seleziona tutto il testo (Ctrl+A) → copialo (Ctrl+C)
+12. Incollalo nell'editor di Supabase (Ctrl+V)
+13. Clicca il pulsante "Run" (o premi Ctrl+Enter)
+14. Dovresti vedere "Success. No rows returned" → perfetto!
+
+TROVA LE TUE CHIAVI API:
+15. Nel menu a sinistra clicca l'ingranaggio ⚙ "Settings"
+16. Clicca "API"
+17. Troveri due valori importanti — annotali su un foglio:
+    • "Project URL" → es. https://abcdefgh.supabase.co
+    • "anon public" (sotto "Project API keys") → una stringa lunga
+
+✅ Supabase è pronto!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PASSO 3 — PUBBLICA IL SITO SU VERCEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Vai su https://vercel.com
+2. Clicca "Sign Up" → scegli "Continue with GitHub"
+3. Autorizza Vercel ad accedere a GitHub
+4. Clicca "Add New..." → "Project"
+5. Trova il repository "cryptoleague" → clicca "Import"
+6. Vercel mostrerà le impostazioni → NON cambiare nulla per ora
+7. Scorri in basso e trova "Environment Variables"
+8. Aggiungi queste 4 variabili una per una:
+   (clicca "Add" dopo ognuna)
+
+   NAME: VITE_SUPABASE_URL
+   VALUE: (incolla il "Project URL" copiato da Supabase)
+
+   NAME: VITE_SUPABASE_ANON_KEY
+   VALUE: (incolla la chiave "anon public" da Supabase)
+
+   NAME: VITE_ADMIN_SECRET
+   VALUE: scegli una parola segreta (es: luna2024)
+
+   NAME: VITE_ADMIN_PASSWORD
+   VALUE: scegli una password (es: Admin@2024)
+
+9. Clicca "Deploy"
+10. Aspetta 1-2 minuti → apparirà "Congratulations!"
+11. Clicca "Visit" → vedrai il tuo sito funzionante!
+
+✅ Il sito è online!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PASSO 4 — COLLEGA IL TUO DOMINIO (opzionale)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. In Vercel, vai sul tuo progetto → "Settings" → "Domains"
+2. Scrivi il tuo dominio (es: cryptoleague.it) → clicca "Add"
+3. Vercel ti mostra dei "DNS Records" da copiare
+4. Vai sul sito dove hai comprato il dominio (es: Aruba, Register.it, GoDaddy)
+5. Cerca la sezione "DNS" o "Gestione DNS"
+6. Aggiungi i record esattamente come indicato da Vercel
+7. Aspetta 15-30 minuti → il dominio funzionerà!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COME USARE IL GIOCO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PANNELLO ADMIN (solo tu):
+→ Vai su: tuosito.com?admin=luna2024
+   (sostituisci "luna2024" con il tuo VITE_ADMIN_SECRET)
+→ Inserisci la password
+→ Tab "Calendario": imposta numero giornate, data inizio, durata
+→ Clicca "Genera Calendario"
+→ Quando vuoi iniziare una giornata → clicca "▶ Avvia"
+→ Quando vuoi terminarla → clicca "■ Termina"
+→ I punteggi vengono calcolati automaticamente!
+
+UTENTI:
+→ Vanno su tuosito.com
+→ Si registrano con nome, email, squadra e 5 crypto
+→ Vedono la classifica in tempo reale su "Classifica"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PROBLEMI COMUNI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ "Errore" durante la registrazione
+→ Controlla che le Environment Variables su Vercel siano corrette
+→ Vai su Vercel → Settings → Environment Variables → ricontrolla
+
+❌ Il pannello admin non appare
+→ Stai usando l'URL giusto? Es: tuosito.com?admin=PAROLA_SEGRETA
+→ La parola segreta deve essere identica a VITE_ADMIN_SECRET su Vercel
+
+❌ Il sito non si aggiorna dopo modifiche
+→ Su GitHub Desktop: commit + push
+→ Vercel fa il re-deploy automaticamente in 1-2 minuti
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COSTI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GitHub:   GRATIS
+Supabase: GRATIS (fino a 500MB database, 50.000 righe)
+Vercel:   GRATIS (progetti personali)
+Totale:   0€/mese 🎉
