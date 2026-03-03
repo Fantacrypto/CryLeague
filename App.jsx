@@ -50,17 +50,10 @@ function calcScore(cryptos, startPrices, endPrices) {
   return count ? total / count : null;
 }
 
-// ─────────────────────────────────────────────────────────────
-// STYLES
-// ─────────────────────────────────────────────────────────────
 const css = `
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#07090e;--surface:#0d1219;--surface2:#131920;--surface3:#1a2230;
-  --border:#1e2a3a;--accent:#00ff94;--accent2:#00bfff;--red:#ff4d6d;
-  --text:#e6edf3;--muted:#5d7a96;--gold:#ffd700;
-}
+:root{--bg:#07090e;--surface:#0d1219;--surface2:#131920;--surface3:#1a2230;--border:#1e2a3a;--accent:#00ff94;--accent2:#00bfff;--red:#ff4d6d;--text:#e6edf3;--muted:#5d7a96;--gold:#ffd700;}
 body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh}
 .app{max-width:960px;margin:0 auto;padding:1rem 1rem 4rem}
 .header{text-align:center;padding:2.5rem 0 1.5rem;position:relative}
@@ -83,7 +76,6 @@ label{font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--
 input{background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.65rem 0.9rem;font-family:'Syne',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;width:100%}
 input:focus{border-color:var(--accent)}
 input::placeholder{color:var(--muted)}
-input:disabled{opacity:0.5;cursor:not-allowed}
 .crypto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:0.45rem;margin-top:0.5rem}
 .crypto-chip{padding:0.5rem 0.6rem;border-radius:8px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;text-align:center;transition:all 0.15s;user-select:none}
 .crypto-chip:hover{border-color:var(--accent2)}
@@ -99,7 +91,7 @@ input:disabled{opacity:0.5;cursor:not-allowed}
 .btn-outline:hover{background:rgba(0,255,148,0.07)}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
 .btn-ghost:hover{border-color:var(--text);color:var(--text)}
-.btn-google{background:#fff;color:#222;display:flex;align-items:center;justify-content:center;gap:0.6rem;width:100%;font-size:0.95rem;padding:0.8rem}
+.btn-google{background:#fff;color:#222;display:flex;align-items:center;justify-content:center;gap:0.6rem;width:100%;font-size:0.95rem;padding:0.8rem;border-radius:8px;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;transition:all 0.18s}
 .btn-google:hover{background:#f5f5f5}
 .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;filter:none!important}
 .btn-sm{padding:0.35rem 0.9rem;font-size:0.78rem;border-radius:6px}
@@ -138,7 +130,6 @@ input:disabled{opacity:0.5;cursor:not-allowed}
 .alert-success{background:rgba(0,255,148,0.07);border:1px solid rgba(0,255,148,0.25);color:var(--accent)}
 .alert-error{background:rgba(255,77,109,0.07);border:1px solid rgba(255,77,109,0.25);color:var(--red)}
 .alert-info{background:rgba(0,191,255,0.07);border:1px solid rgba(0,191,255,0.25);color:var(--accent2)}
-.divider{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
 .flex{display:flex;align-items:center;gap:0.7rem;flex-wrap:wrap}
 .flex-between{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
 .mt{margin-top:1rem}
@@ -157,13 +148,9 @@ input:disabled{opacity:0.5;cursor:not-allowed}
 .lock-badge{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.72rem;color:var(--red);font-family:'JetBrains Mono',monospace}
 `;
 
-// ─────────────────────────────────────────────────────────────
-// MAIN APP
-// ─────────────────────────────────────────────────────────────
 export default function App() {
   const isAdmin = window.location.pathname.includes(ADMIN_SECRET) ||
     new URLSearchParams(window.location.search).get("admin") === ADMIN_SECRET;
-
   const [page, setPage] = useState(isAdmin ? "admin" : "squadra");
   const [user, setUser] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
@@ -183,20 +170,11 @@ export default function App() {
   async function signInWithGoogle() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: window.location.href },
+      options: { redirectTo: window.location.origin },
     });
   }
 
-  async function signOut() {
-    await supabase.auth.signOut();
-  }
-
-  if (loadingAuth) return (
-    <>
-      <style>{css}</style>
-      <div className="app"><div className="loading">Caricamento</div></div>
-    </>
-  );
+  if (loadingAuth) return (<><style>{css}</style><div className="app"><div className="loading">Caricamento</div></div></>);
 
   return (
     <>
@@ -207,67 +185,40 @@ export default function App() {
           <div className="logo">Crypto<span>League</span></div>
           <div className="subtitle">Fantasy Crypto Championship · Alpha</div>
         </header>
-
-        {/* User bar */}
         {user && !isAdmin && (
           <div className="user-bar">
             <div className="user-info">
-              {user.user_metadata?.avatar_url && (
-                <img src={user.user_metadata.avatar_url} className="avatar" alt="avatar" />
-              )}
+              {user.user_metadata?.avatar_url && <img src={user.user_metadata.avatar_url} className="avatar" alt="avatar" />}
               <div>
                 <div className="user-name">{user.user_metadata?.full_name || "Utente"}</div>
                 <div className="user-email">{user.email}</div>
               </div>
             </div>
-            <button className="btn btn-ghost btn-sm" onClick={signOut}>Esci</button>
+            <button className="btn btn-ghost btn-sm" onClick={() => supabase.auth.signOut()}>Esci</button>
           </div>
         )}
-
         <nav className="nav">
-          {!isAdmin && (
-            <>
-              <button className={`nav-btn ${page === "squadra" ? "active" : ""}`} onClick={() => setPage("squadra")}>
-                La mia squadra
-              </button>
-              <button className={`nav-btn ${page === "leaderboard" ? "active" : ""}`} onClick={() => setPage("leaderboard")}>
-                Classifica
-              </button>
-            </>
-          )}
-          {isAdmin && (
-            <button className={`nav-btn ${page === "admin" ? "active" : ""}`} onClick={() => setPage("admin")}>
-              Admin
-            </button>
-          )}
+          {!isAdmin && (<>
+            <button className={`nav-btn ${page === "squadra" ? "active" : ""}`} onClick={() => setPage("squadra")}>La mia squadra</button>
+            <button className={`nav-btn ${page === "leaderboard" ? "active" : ""}`} onClick={() => setPage("leaderboard")}>Classifica</button>
+          </>)}
+          {isAdmin && <button className={`nav-btn ${page === "admin" ? "active" : ""}`} onClick={() => setPage("admin")}>Admin</button>}
         </nav>
-
-        {page === "squadra" && !isAdmin && (
-          user
-            ? <SquadraPage user={user} />
-            : <LoginPage onLogin={signInWithGoogle} />
-        )}
+        {page === "squadra" && !isAdmin && (user ? <SquadraPage user={user} /> : <LoginPage onLogin={signInWithGoogle} />)}
         {page === "leaderboard" && <LeaderboardPage />}
-        {page === "admin" && isAdmin && (
-          <AdminPage adminAuthed={adminAuthed} setAdminAuthed={setAdminAuthed} />
-        )}
+        {page === "admin" && isAdmin && <AdminPage adminAuthed={adminAuthed} setAdminAuthed={setAdminAuthed} />}
       </div>
     </>
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// LOGIN PAGE
-// ─────────────────────────────────────────────────────────────
 function LoginPage({ onLogin }) {
   return (
     <div className="card" style={{ maxWidth: 400, margin: "0 auto", textAlign: "center" }}>
       <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🏆</div>
       <div style={{ fontWeight: 800, fontSize: "1.3rem", marginBottom: "0.4rem" }}>Entra in CryptoLeague</div>
-      <p className="text-muted" style={{ marginBottom: "1.5rem", lineHeight: 1.6 }}>
-        Accedi con Google per registrare la tua squadra e competere nella classifica.
-      </p>
-      <button className="btn btn-google" onClick={onLogin}>
+      <p className="text-muted" style={{ marginBottom: "1.5rem", lineHeight: 1.6 }}>Accedi con Google per registrare la tua squadra e competere nella classifica.</p>
+      <button className="btn-google" onClick={onLogin}>
         <svg width="20" height="20" viewBox="0 0 48 48">
           <path fill="#FFC107" d="M43.6 20H24v8h11.3C33.7 32.6 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/>
           <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16 19 12 24 12c3 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
@@ -280,9 +231,6 @@ function LoginPage({ onLogin }) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// SQUADRA PAGE (profilo utente + registrazione/modifica)
-// ─────────────────────────────────────────────────────────────
 function SquadraPage({ user }) {
   const [team, setTeam] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -298,8 +246,8 @@ function SquadraPage({ user }) {
   async function loadData() {
     setLoading(true);
     const [{ data: teamData }, { data: roundData }] = await Promise.all([
-      supabase.from("teams").select("*").eq("user_id", user.id).single(),
-      supabase.from("rounds").select("*").eq("stato", "active").single(),
+      supabase.from("teams").select("*").eq("user_id", user.id).maybeSingle(),
+      supabase.from("rounds").select("*").eq("stato", "active").maybeSingle(),
     ]);
     setTeam(teamData || null);
     setActiveRound(roundData || null);
@@ -320,111 +268,58 @@ function SquadraPage({ user }) {
   }
 
   async function saveTeam() {
-    if (!form.nome || !form.cognome || !form.squadra)
-      return setStatus({ type: "error", msg: "Compila tutti i campi." });
-    if (selected.length !== 5)
-      return setStatus({ type: "error", msg: "Seleziona esattamente 5 crypto." });
-
+    if (!form.nome || !form.cognome || !form.squadra) return setStatus({ type: "error", msg: "Compila tutti i campi." });
+    if (selected.length !== 5) return setStatus({ type: "error", msg: "Seleziona esattamente 5 crypto." });
     setSaving(true);
-    const payload = {
-      user_id: user.id,
-      email: user.email,
-      nome: form.nome,
-      cognome: form.cognome,
-      squadra: form.squadra,
-      cryptos: selected,
-    };
-
-    let error;
-    if (team) {
-      ({ error } = await supabase.from("teams").update(payload).eq("user_id", user.id));
-    } else {
-      ({ error } = await supabase.from("teams").insert([payload]));
-    }
-
-    if (error) {
-      setStatus({ type: "error", msg: error.message });
-    } else {
-      setStatus({ type: "success", msg: team ? "✅ Squadra aggiornata!" : "🚀 Squadra registrata! Buona fortuna!" });
-      setEditing(false);
-      loadData();
-    }
+    const payload = { user_id: user.id, email: user.email, nome: form.nome, cognome: form.cognome, squadra: form.squadra, cryptos: selected };
+    const { error } = team
+      ? await supabase.from("teams").update(payload).eq("user_id", user.id)
+      : await supabase.from("teams").insert([payload]);
+    if (error) { setStatus({ type: "error", msg: error.message }); }
+    else { setStatus({ type: "success", msg: team ? "✅ Squadra aggiornata!" : "🚀 Squadra registrata!" }); setEditing(false); loadData(); }
     setSaving(false);
   }
 
   if (loading) return <div className="loading">Caricamento</div>;
-
-  const canEdit = !activeRound; // può modificare solo se nessuna giornata è attiva
+  const canEdit = !activeRound;
 
   return (
     <div>
       {status && <div className={`alert alert-${status.type}`}>{status.msg}</div>}
-
-      {/* Mostra squadra attuale */}
       {team && !editing && (
         <div className="card">
           <div className="flex-between" style={{ marginBottom: "1rem" }}>
             <div className="card-title" style={{ margin: 0 }}>// La tua squadra</div>
-            {canEdit
-              ? <button className="btn btn-outline btn-sm" onClick={() => setEditing(true)}>✏️ Modifica</button>
-              : <span className="lock-badge">🔒 Giornata in corso</span>
-            }
+            {canEdit ? <button className="btn btn-outline btn-sm" onClick={() => setEditing(true)}>✏️ Modifica</button> : <span className="lock-badge">🔒 Giornata in corso</span>}
           </div>
-
           <div style={{ marginBottom: "1rem" }}>
             <div style={{ fontWeight: 800, fontSize: "1.3rem" }}>{team.squadra}</div>
             <div className="text-muted">{team.nome} {team.cognome}</div>
           </div>
-
-          <div>
-            <div style={{ fontSize: "0.75rem", color: "var(--muted)", marginBottom: "0.5rem", fontFamily: "JetBrains Mono", textTransform: "uppercase", letterSpacing: "1px" }}>Le tue 5 crypto</div>
-            <div className="team-chips" style={{ gap: "0.4rem" }}>
-              {team.cryptos.map(c => (
-                <span key={c.id} style={{ padding: "0.4rem 0.8rem", borderRadius: "8px", background: "rgba(0,255,148,0.08)", border: "1px solid rgba(0,255,148,0.25)", fontSize: "0.85rem", fontFamily: "JetBrains Mono", fontWeight: 700, color: "var(--accent)" }}>
-                  {c.symbol} <span style={{ color: "var(--muted)", fontWeight: 400 }}>{c.name}</span>
-                </span>
-              ))}
-            </div>
+          <div style={{ fontSize: "0.75rem", color: "var(--muted)", marginBottom: "0.5rem", fontFamily: "JetBrains Mono", textTransform: "uppercase", letterSpacing: "1px" }}>Le tue 5 crypto</div>
+          <div className="team-chips" style={{ gap: "0.4rem" }}>
+            {team.cryptos.map(c => (
+              <span key={c.id} style={{ padding: "0.4rem 0.8rem", borderRadius: "8px", background: "rgba(0,255,148,0.08)", border: "1px solid rgba(0,255,148,0.25)", fontSize: "0.85rem", fontFamily: "JetBrains Mono", fontWeight: 700, color: "var(--accent)" }}>
+                {c.symbol} <span style={{ color: "var(--muted)", fontWeight: 400 }}>{c.name}</span>
+              </span>
+            ))}
           </div>
-
-          {!canEdit && (
-            <div className="alert alert-info mt">
-              ⚡ Una giornata è in corso — puoi modificare la squadra solo tra una giornata e l'altra.
-            </div>
-          )}
+          {!canEdit && <div className="alert alert-info mt">⚡ Giornata in corso — puoi modificare solo tra una giornata e l'altra.</div>}
         </div>
       )}
-
-      {/* Form registrazione / modifica */}
       {editing && (
         <div className="card">
           <div className="card-title">{team ? "// Modifica squadra" : "// Registra la tua squadra"}</div>
-
           <div className="card-sm" style={{ marginBottom: "1rem" }}>
             <div className="flex">
-              {user.user_metadata?.avatar_url && (
-                <img src={user.user_metadata.avatar_url} className="avatar" alt="avatar" />
-              )}
-              <div>
-                <div style={{ fontWeight: 700 }}>{user.user_metadata?.full_name}</div>
-                <div className="text-muted">{user.email}</div>
-              </div>
+              {user.user_metadata?.avatar_url && <img src={user.user_metadata.avatar_url} className="avatar" alt="avatar" />}
+              <div><div style={{ fontWeight: 700 }}>{user.user_metadata?.full_name}</div><div className="text-muted">{user.email}</div></div>
             </div>
           </div>
-
           <div className="form-grid">
-            <div className="field">
-              <label>Nome</label>
-              <input placeholder="Mario" value={form.nome} onChange={e => setForm(p => ({ ...p, nome: e.target.value }))} />
-            </div>
-            <div className="field">
-              <label>Cognome</label>
-              <input placeholder="Rossi" value={form.cognome} onChange={e => setForm(p => ({ ...p, cognome: e.target.value }))} />
-            </div>
-            <div className="field full">
-              <label>Nome Squadra</label>
-              <input placeholder="Moon Hunters" value={form.squadra} onChange={e => setForm(p => ({ ...p, squadra: e.target.value }))} />
-            </div>
+            <div className="field"><label>Nome</label><input placeholder="Mario" value={form.nome} onChange={e => setForm(p => ({ ...p, nome: e.target.value }))} /></div>
+            <div className="field"><label>Cognome</label><input placeholder="Rossi" value={form.cognome} onChange={e => setForm(p => ({ ...p, cognome: e.target.value }))} /></div>
+            <div className="field full"><label>Nome Squadra</label><input placeholder="Moon Hunters" value={form.squadra} onChange={e => setForm(p => ({ ...p, squadra: e.target.value }))} /></div>
             <div className="field full">
               <label>Scegli 5 Crypto ({selected.length}/5)</label>
               <div className="crypto-grid">
@@ -432,8 +327,7 @@ function SquadraPage({ user }) {
                   const isSel = !!selected.find(x => x.id === c.id);
                   const isDis = !isSel && selected.length >= 5;
                   return (
-                    <div key={c.id} className={`crypto-chip ${isSel ? "selected" : ""} ${isDis ? "disabled" : ""}`}
-                      onClick={() => !isDis && toggleCrypto(c)}>
+                    <div key={c.id} className={`crypto-chip ${isSel ? "selected" : ""} ${isDis ? "disabled" : ""}`} onClick={() => !isDis && toggleCrypto(c)}>
                       <div className="crypto-sym">{c.symbol}</div>
                       <div className="crypto-name">{c.name}</div>
                     </div>
@@ -442,14 +336,9 @@ function SquadraPage({ user }) {
               </div>
             </div>
           </div>
-
           <div className="flex mt">
-            <button className="btn btn-primary" onClick={saveTeam} disabled={saving}>
-              {saving ? "Salvataggio..." : team ? "Salva modifiche" : "Registra Squadra →"}
-            </button>
-            {team && (
-              <button className="btn btn-ghost" onClick={() => { setEditing(false); setStatus(null); }}>Annulla</button>
-            )}
+            <button className="btn btn-primary" onClick={saveTeam} disabled={saving}>{saving ? "Salvataggio..." : team ? "Salva modifiche" : "Registra Squadra →"}</button>
+            {team && <button className="btn btn-ghost" onClick={() => { setEditing(false); setStatus(null); }}>Annulla</button>}
           </div>
         </div>
       )}
@@ -457,9 +346,6 @@ function SquadraPage({ user }) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// LEADERBOARD
-// ─────────────────────────────────────────────────────────────
 function LeaderboardPage() {
   const [teams, setTeams] = useState([]);
   const [rounds, setRounds] = useState([]);
@@ -475,166 +361,112 @@ function LeaderboardPage() {
       supabase.from("rounds").select("*").order("numero"),
       supabase.from("round_scores").select("*"),
     ]);
-    setTeams(t || []);
-    setRounds(r || []);
-    setScores(s || []);
-
+    setTeams(t || []); setRounds(r || []); setScores(s || []);
     const active = (r || []).find(x => x.stato === "active");
     if (active && t?.length) {
       try {
         const ids = [...new Set(t.flatMap(team => team.cryptos.map(c => c.id)))];
         const prices = await fetchCryptoPrices(ids);
-        const live = t.map(team => ({
-          ...team,
-          live_score: calcScore(team.cryptos, active.start_prices, prices),
-        })).sort((a, b) => (b.live_score ?? -Infinity) - (a.live_score ?? -Infinity));
-        setLiveData({ round: active, teams: live });
+        setLiveData({ round: active, teams: t.map(team => ({ ...team, live_score: calcScore(team.cryptos, active.start_prices, prices) })).sort((a, b) => (b.live_score ?? -Infinity) - (a.live_score ?? -Infinity)) });
       } catch { setLiveData(null); }
-    } else {
-      setLiveData(null);
-    }
-
+    } else { setLiveData(null); }
     if (!selRound && r?.length) {
-      const active2 = r.find(x => x.stato === "active");
-      const last = [...(r || [])].reverse().find(x => x.stato === "completed");
-      setSelRound(active2 || last || r[0]);
+      const a = r.find(x => x.stato === "active");
+      const l = [...(r || [])].reverse().find(x => x.stato === "completed");
+      setSelRound(a || l || r[0]);
     }
     setLoading(false);
   }
 
   useEffect(() => { load(); const t = setInterval(load, 60000); return () => clearInterval(t); }, []);
-
   if (loading) return <div className="loading">Caricamento classifica</div>;
 
   const activeRound = rounds.find(r => r.stato === "active");
   const completed = rounds.filter(r => r.stato === "completed");
-
   const general = teams.map(team => {
     let total = 0, count = 0;
     for (const r of completed) {
       const s = scores.find(x => x.round_id === r.id && x.team_id === team.id);
-      if (s?.score !== null && s?.score !== undefined) { total += Number(s.score); count++; }
+      if (s?.score != null) { total += Number(s.score); count++; }
     }
     return { ...team, total_score: count ? total : null, rounds_played: count };
   }).sort((a, b) => (b.total_score ?? -Infinity) - (a.total_score ?? -Infinity));
 
+  const rankIcon = i => i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `#${i + 1}`;
+  const scoreClass = s => s == null ? "neutral" : Number(s) >= 0 ? "pos" : "neg";
+
   function roundRanking(round) {
     if (!round) return [];
     if (liveData?.round?.id === round.id) return liveData.teams;
-    return teams.map(team => {
-      const s = scores.find(x => x.round_id === round.id && x.team_id === team.id);
-      return { ...team, score: s?.score ?? null };
-    }).sort((a, b) => (b.score ?? -Infinity) - (a.score ?? -Infinity));
+    return teams.map(team => ({ ...team, score: scores.find(x => x.round_id === round.id && x.team_id === team.id)?.score ?? null })).sort((a, b) => (b.score ?? -Infinity) - (a.score ?? -Infinity));
   }
-
-  const rankIcon = i => i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `#${i + 1}`;
-  const scoreClass = s => s === null || s === undefined ? "neutral" : Number(s) >= 0 ? "pos" : "neg";
 
   return (
     <div>
       <div className="card">
         <div className="flex-between" style={{ marginBottom: "1rem" }}>
           <div className="flex">
-            {activeRound
-              ? <span className="badge badge-green"><div className="pulse" />LIVE · {activeRound.nome}</span>
-              : <span className="badge badge-muted">In attesa</span>}
+            {activeRound ? <span className="badge badge-green"><div className="pulse" />LIVE · {activeRound.nome}</span> : <span className="badge badge-muted">In attesa</span>}
             <span className="text-muted">{completed.length}/{rounds.length} giornate</span>
           </div>
           <button className="btn btn-ghost btn-sm" onClick={load}>↻</button>
         </div>
-
         <div className="tab-bar">
           <div className={`tab ${tab === "generale" ? "active" : ""}`} onClick={() => setTab("generale")}>Generale</div>
           <div className={`tab ${tab === "calendario" ? "active" : ""}`} onClick={() => setTab("calendario")}>Calendario</div>
           {selRound && <div className={`tab ${tab === "giornata" ? "active" : ""}`} onClick={() => setTab("giornata")}>{selRound.nome}</div>}
         </div>
-
-        {tab === "generale" && (
-          general.length === 0
-            ? <div className="empty">Nessuna squadra registrata ancora.</div>
-            : <div className="lb-table">
-                {general.map((team, i) => (
-                  <div key={team.id} className={`lb-row lb-cols ${i === 0 ? "top1" : i === 1 ? "top2" : i === 2 ? "top3" : ""}`}>
-                    <div className={`lb-rank ${i === 0 ? "r1" : i === 1 ? "r2" : i === 2 ? "r3" : ""}`}>{rankIcon(i)}</div>
-                    <div>
-                      <div style={{ fontWeight: 700 }}>{team.squadra}</div>
-                      <div className="text-muted">{team.nome} {team.cognome}</div>
-                      <div className="team-chips">{(team.cryptos || []).map(c => <span key={c.id} className="mini-chip">{c.symbol}</span>)}</div>
-                    </div>
-                    <div>
-                      <div className={`lb-score ${scoreClass(team.total_score)}`}>{fmt(team.total_score)}</div>
-                      <div className="text-muted" style={{ fontSize: "0.7rem", textAlign: "right" }}>{team.rounds_played} gior.</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+        {tab === "generale" && (general.length === 0 ? <div className="empty">Nessuna squadra ancora.</div> :
+          <div className="lb-table">{general.map((team, i) => (
+            <div key={team.id} className={`lb-row lb-cols ${i===0?"top1":i===1?"top2":i===2?"top3":""}`}>
+              <div className={`lb-rank ${i===0?"r1":i===1?"r2":i===2?"r3":""}`}>{rankIcon(i)}</div>
+              <div><div style={{fontWeight:700}}>{team.squadra}</div><div className="text-muted">{team.nome} {team.cognome}</div><div className="team-chips">{(team.cryptos||[]).map(c=><span key={c.id} className="mini-chip">{c.symbol}</span>)}</div></div>
+              <div><div className={`lb-score ${scoreClass(team.total_score)}`}>{fmt(team.total_score)}</div><div className="text-muted" style={{fontSize:"0.7rem",textAlign:"right"}}>{team.rounds_played} gior.</div></div>
+            </div>
+          ))}</div>
         )}
-
-        {tab === "calendario" && (
-          rounds.length === 0
-            ? <div className="empty">Nessun calendario creato.</div>
-            : <div className="calendar-grid">
-                {rounds.map(r => (
-                  <div key={r.id}
-                    className={`round-card ${r.stato === "active" ? "active-round" : ""} ${r.stato === "completed" ? "completed-round" : ""} ${selRound?.id === r.id ? "selected-round" : ""}`}
-                    onClick={() => { setSelRound(r); setTab("giornata"); }}>
-                    <div className="round-num">{r.numero}</div>
-                    <div className="round-name">{r.nome}</div>
-                    <div className="round-dates">{fmtDate(r.data_inizio)} → {fmtDate(r.data_fine)}</div>
-                    <div style={{ marginTop: "0.6rem" }}>
-                      {r.stato === "active" && <span className="badge badge-green" style={{ fontSize: "0.65rem" }}><div className="pulse" />LIVE</span>}
-                      {r.stato === "completed" && <span className="badge badge-muted" style={{ fontSize: "0.65rem" }}>Completata</span>}
-                      {r.stato === "scheduled" && <span className="badge badge-blue" style={{ fontSize: "0.65rem" }}>Programmata</span>}
-                    </div>
-                  </div>
-                ))}
+        {tab === "calendario" && (rounds.length === 0 ? <div className="empty">Nessun calendario.</div> :
+          <div className="calendar-grid">{rounds.map(r => (
+            <div key={r.id} className={`round-card ${r.stato==="active"?"active-round":""} ${r.stato==="completed"?"completed-round":""} ${selRound?.id===r.id?"selected-round":""}`} onClick={() => { setSelRound(r); setTab("giornata"); }}>
+              <div className="round-num">{r.numero}</div>
+              <div className="round-name">{r.nome}</div>
+              <div className="round-dates">{fmtDate(r.data_inizio)} → {fmtDate(r.data_fine)}</div>
+              <div style={{marginTop:"0.6rem"}}>
+                {r.stato==="active"&&<span className="badge badge-green" style={{fontSize:"0.65rem"}}><div className="pulse"/>LIVE</span>}
+                {r.stato==="completed"&&<span className="badge badge-muted" style={{fontSize:"0.65rem"}}>Completata</span>}
+                {r.stato==="scheduled"&&<span className="badge badge-blue" style={{fontSize:"0.65rem"}}>Programmata</span>}
               </div>
+            </div>
+          ))}</div>
         )}
-
         {tab === "giornata" && selRound && (() => {
           const ranking = roundRanking(selRound);
-          return (
-            <>
-              <div className="flex-between" style={{ marginBottom: "1rem" }}>
-                <div>
-                  <div style={{ fontWeight: 700 }}>{selRound.nome}</div>
-                  <div className="text-muted">{fmtDate(selRound.data_inizio)} → {fmtDate(selRound.data_fine)}</div>
-                </div>
-                {selRound.stato === "active" && <span className="badge badge-green"><div className="pulse" />LIVE</span>}
-                {selRound.stato === "completed" && <span className="badge badge-muted">Completata</span>}
-                {selRound.stato === "scheduled" && <span className="badge badge-blue">Programmata</span>}
-              </div>
-              {selRound.stato === "scheduled"
-                ? <div className="empty">Questa giornata non è ancora iniziata.</div>
-                : ranking.length === 0
-                  ? <div className="empty">Nessun dato disponibile.</div>
-                  : <div className="lb-table">
-                      {ranking.map((team, i) => {
-                        const score = team.live_score !== undefined ? team.live_score : team.score;
-                        return (
-                          <div key={team.id} className={`lb-row lb-cols ${i === 0 ? "top1" : i === 1 ? "top2" : i === 2 ? "top3" : ""}`}>
-                            <div className={`lb-rank ${i === 0 ? "r1" : i === 1 ? "r2" : i === 2 ? "r3" : ""}`}>{rankIcon(i)}</div>
-                            <div>
-                              <div style={{ fontWeight: 700 }}>{team.squadra}</div>
-                              <div className="team-chips">{(team.cryptos || []).map(c => <span key={c.id} className="mini-chip">{c.symbol}</span>)}</div>
-                            </div>
-                            <div className={`lb-score ${scoreClass(score)}`}>{fmt(score)}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
-              }
-            </>
-          );
+          return (<>
+            <div className="flex-between" style={{marginBottom:"1rem"}}>
+              <div><div style={{fontWeight:700}}>{selRound.nome}</div><div className="text-muted">{fmtDate(selRound.data_inizio)} → {fmtDate(selRound.data_fine)}</div></div>
+              {selRound.stato==="active"&&<span className="badge badge-green"><div className="pulse"/>LIVE</span>}
+              {selRound.stato==="completed"&&<span className="badge badge-muted">Completata</span>}
+              {selRound.stato==="scheduled"&&<span className="badge badge-blue">Programmata</span>}
+            </div>
+            {selRound.stato==="scheduled" ? <div className="empty">Non ancora iniziata.</div> : ranking.length===0 ? <div className="empty">Nessun dato.</div> :
+              <div className="lb-table">{ranking.map((team,i) => {
+                const score = team.live_score !== undefined ? team.live_score : team.score;
+                return (
+                  <div key={team.id} className={`lb-row lb-cols ${i===0?"top1":i===1?"top2":i===2?"top3":""}`}>
+                    <div className={`lb-rank ${i===0?"r1":i===1?"r2":i===2?"r3":""}`}>{rankIcon(i)}</div>
+                    <div><div style={{fontWeight:700}}>{team.squadra}</div><div className="team-chips">{(team.cryptos||[]).map(c=><span key={c.id} className="mini-chip">{c.symbol}</span>)}</div></div>
+                    <div className={`lb-score ${scoreClass(score)}`}>{fmt(score)}</div>
+                  </div>
+                );
+              })}</div>
+            }
+          </>);
         })()}
       </div>
     </div>
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// ADMIN
-// ─────────────────────────────────────────────────────────────
 function AdminPage({ adminAuthed, setAdminAuthed }) {
   const [pw, setPw] = useState("");
   const [pwErr, setPwErr] = useState(false);
@@ -646,18 +478,11 @@ function AdminPage({ adminAuthed, setAdminAuthed }) {
   const [confirmReset, setConfirmReset] = useState(false);
   const [calForm, setCalForm] = useState({ totalRounds: 8, startDate: "", intervalDays: 7 });
 
-  function login() {
-    if (pw === ADMIN_PASSWORD) { setAdminAuthed(true); loadAll(); }
-    else setPwErr(true);
-  }
+  function login() { if (pw === ADMIN_PASSWORD) { setAdminAuthed(true); loadAll(); } else setPwErr(true); }
 
   async function loadAll() {
-    const [{ data: t }, { data: r }] = await Promise.all([
-      supabase.from("teams").select("*").order("created_at"),
-      supabase.from("rounds").select("*").order("numero"),
-    ]);
-    setTeams(t || []);
-    setRounds(r || []);
+    const [{ data: t }, { data: r }] = await Promise.all([supabase.from("teams").select("*").order("created_at"), supabase.from("rounds").select("*").order("numero")]);
+    setTeams(t || []); setRounds(r || []);
   }
 
   useEffect(() => { if (adminAuthed) loadAll(); }, [adminAuthed]);
@@ -666,11 +491,7 @@ function AdminPage({ adminAuthed, setAdminAuthed }) {
     <div className="card" style={{ maxWidth: 360, margin: "0 auto" }}>
       <div className="card-title">// Accesso Admin</div>
       {pwErr && <div className="alert alert-error">Password errata.</div>}
-      <div className="field">
-        <label>Password</label>
-        <input type="password" placeholder="••••••••" value={pw}
-          onChange={e => setPw(e.target.value)} onKeyDown={e => e.key === "Enter" && login()} />
-      </div>
+      <div className="field"><label>Password</label><input type="password" placeholder="••••••••" value={pw} onChange={e => setPw(e.target.value)} onKeyDown={e => e.key === "Enter" && login()} /></div>
       <button className="btn btn-primary mt" onClick={login}>Accedi</button>
     </div>
   );
@@ -683,15 +504,12 @@ function AdminPage({ adminAuthed, setAdminAuthed }) {
       await supabase.from("rounds").delete().neq("id", "00000000-0000-0000-0000-000000000000");
       const newRounds = [];
       for (let i = 0; i < calForm.totalRounds; i++) {
-        const start = new Date(calForm.startDate);
-        start.setDate(start.getDate() + i * calForm.intervalDays);
-        const end = new Date(start);
-        end.setDate(end.getDate() + calForm.intervalDays);
-        newRounds.push({ numero: i + 1, nome: `Giornata ${i + 1}`, data_inizio: start.toISOString(), data_fine: end.toISOString(), stato: "scheduled" });
+        const start = new Date(calForm.startDate); start.setDate(start.getDate() + i * calForm.intervalDays);
+        const end = new Date(start); end.setDate(end.getDate() + calForm.intervalDays);
+        newRounds.push({ numero: i+1, nome: `Giornata ${i+1}`, data_inizio: start.toISOString(), data_fine: end.toISOString(), stato: "scheduled" });
       }
       await supabase.from("rounds").insert(newRounds);
-      setMsg({ type: "success", msg: `✅ Calendario creato: ${calForm.totalRounds} giornate.` });
-      loadAll();
+      setMsg({ type: "success", msg: `✅ Calendario creato: ${calForm.totalRounds} giornate.` }); loadAll();
     } catch (err) { setMsg({ type: "error", msg: err.message }); }
     setBusy(false);
   }
@@ -700,11 +518,9 @@ function AdminPage({ adminAuthed, setAdminAuthed }) {
     setBusy(true);
     try {
       const { data: t } = await supabase.from("teams").select("cryptos");
-      const ids = [...new Set(t.flatMap(x => x.cryptos.map(c => c.id)))];
-      const prices = await fetchCryptoPrices(ids);
+      const prices = await fetchCryptoPrices([...new Set(t.flatMap(x => x.cryptos.map(c => c.id)))]);
       await supabase.from("rounds").update({ stato: "active", start_prices: prices, data_inizio: new Date().toISOString() }).eq("id", round.id);
-      setMsg({ type: "success", msg: "▶ Giornata avviata!" });
-      loadAll();
+      setMsg({ type: "success", msg: "▶ Giornata avviata!" }); loadAll();
     } catch (err) { setMsg({ type: "error", msg: err.message }); }
     setBusy(false);
   }
@@ -713,13 +529,10 @@ function AdminPage({ adminAuthed, setAdminAuthed }) {
     setBusy(true);
     try {
       const { data: t } = await supabase.from("teams").select("*");
-      const ids = [...new Set(t.flatMap(x => x.cryptos.map(c => c.id)))];
-      const endPrices = await fetchCryptoPrices(ids);
+      const endPrices = await fetchCryptoPrices([...new Set(t.flatMap(x => x.cryptos.map(c => c.id)))]);
       await supabase.from("rounds").update({ stato: "completed", end_prices: endPrices, data_fine: new Date().toISOString() }).eq("id", round.id);
-      const scoreRows = t.map(team => ({ round_id: round.id, team_id: team.id, score: calcScore(team.cryptos, round.start_prices, endPrices) }));
-      await supabase.from("round_scores").upsert(scoreRows, { onConflict: "round_id,team_id" });
-      setMsg({ type: "success", msg: "■ Giornata terminata! Punteggi salvati." });
-      loadAll();
+      await supabase.from("round_scores").upsert(t.map(team => ({ round_id: round.id, team_id: team.id, score: calcScore(team.cryptos, round.start_prices, endPrices) })), { onConflict: "round_id,team_id" });
+      setMsg({ type: "success", msg: "■ Giornata terminata!" }); loadAll();
     } catch (err) { setMsg({ type: "error", msg: err.message }); }
     setBusy(false);
   }
@@ -735,10 +548,7 @@ function AdminPage({ adminAuthed, setAdminAuthed }) {
     await supabase.from("round_scores").delete().neq("id", "00000000-0000-0000-0000-000000000000");
     await supabase.from("rounds").delete().neq("id", "00000000-0000-0000-0000-000000000000");
     await supabase.from("teams").delete().neq("id", "00000000-0000-0000-0000-000000000000");
-    setConfirmReset(false);
-    setMsg({ type: "success", msg: "Reset completato." });
-    loadAll();
-    setBusy(false);
+    setConfirmReset(false); setMsg({ type: "success", msg: "Reset completato." }); loadAll(); setBusy(false);
   }
 
   const activeRound = rounds.find(r => r.stato === "active");
@@ -752,88 +562,60 @@ function AdminPage({ adminAuthed, setAdminAuthed }) {
           <div className="stat-box"><div className="stat-num">{teams.length}</div><div className="stat-label">Squadre</div></div>
           <div className="stat-box"><div className="stat-num">{rounds.length}</div><div className="stat-label">Giornate</div></div>
           <div className="stat-box"><div className="stat-num">{completed.length}</div><div className="stat-label">Completate</div></div>
-          <div className="stat-box">
-            <div style={{ paddingTop: "0.3rem" }}>
-              {activeRound ? <span className="badge badge-green"><div className="pulse" />LIVE</span> : <span style={{ color: "var(--muted)", fontFamily: "JetBrains Mono", fontWeight: 700 }}>—</span>}
-            </div>
-            <div className="stat-label">Stato</div>
-          </div>
+          <div className="stat-box"><div style={{paddingTop:"0.3rem"}}>{activeRound?<span className="badge badge-green"><div className="pulse"/>LIVE</span>:<span style={{color:"var(--muted)",fontFamily:"JetBrains Mono",fontWeight:700}}>—</span>}</div><div className="stat-label">Stato</div></div>
         </div>
-
         <div className="tab-bar">
-          <div className={`tab ${tab === "calendario" ? "active" : ""}`} onClick={() => setTab("calendario")}>Calendario</div>
-          <div className={`tab ${tab === "squadre" ? "active" : ""}`} onClick={() => setTab("squadre")}>Squadre ({teams.length})</div>
-          <div className={`tab ${tab === "impostazioni" ? "active" : ""}`} onClick={() => setTab("impostazioni")}>Impostazioni</div>
+          <div className={`tab ${tab==="calendario"?"active":""}`} onClick={() => setTab("calendario")}>Calendario</div>
+          <div className={`tab ${tab==="squadre"?"active":""}`} onClick={() => setTab("squadre")}>Squadre ({teams.length})</div>
+          <div className={`tab ${tab==="impostazioni"?"active":""}`} onClick={() => setTab("impostazioni")}>Impostazioni</div>
         </div>
-
-        {tab === "calendario" && (
-          <>
-            <div className="card-sm" style={{ marginBottom: "1rem" }}>
-              <div style={{ fontWeight: 700, marginBottom: "0.8rem", fontSize: "0.85rem" }}>📅 Genera Calendario</div>
-              <div className="form-grid">
-                <div className="field"><label>Numero Giornate</label><input type="number" min="1" max="52" value={calForm.totalRounds} onChange={e => setCalForm(p => ({ ...p, totalRounds: parseInt(e.target.value) }))} /></div>
-                <div className="field"><label>Durata (giorni)</label><input type="number" min="1" max="30" value={calForm.intervalDays} onChange={e => setCalForm(p => ({ ...p, intervalDays: parseInt(e.target.value) }))} /></div>
-                <div className="field full"><label>Data Inizio</label><input type="date" value={calForm.startDate} onChange={e => setCalForm(p => ({ ...p, startDate: e.target.value }))} /></div>
-              </div>
-              <div className="flex mt">
-                <button className="btn btn-primary btn-sm" onClick={generateCalendar} disabled={busy}>{busy ? "..." : "Genera"}</button>
-                <span className="text-muted" style={{ fontSize: "0.75rem" }}>⚠ Sovrascrive il calendario</span>
-              </div>
+        {tab === "calendario" && (<>
+          <div className="card-sm" style={{marginBottom:"1rem"}}>
+            <div style={{fontWeight:700,marginBottom:"0.8rem",fontSize:"0.85rem"}}>📅 Genera Calendario</div>
+            <div className="form-grid">
+              <div className="field"><label>Giornate</label><input type="number" min="1" max="52" value={calForm.totalRounds} onChange={e => setCalForm(p => ({...p,totalRounds:parseInt(e.target.value)}))} /></div>
+              <div className="field"><label>Durata (giorni)</label><input type="number" min="1" max="30" value={calForm.intervalDays} onChange={e => setCalForm(p => ({...p,intervalDays:parseInt(e.target.value)}))} /></div>
+              <div className="field full"><label>Data Inizio</label><input type="date" value={calForm.startDate} onChange={e => setCalForm(p => ({...p,startDate:e.target.value}))} /></div>
             </div>
-            {rounds.length === 0
-              ? <div className="empty">Nessun calendario.</div>
-              : <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                  {rounds.map(r => (
-                    <div key={r.id} style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", gap: "0.8rem", padding: "0.8rem 1rem", background: "var(--surface2)", borderRadius: "10px", border: `1px solid ${r.stato === "active" ? "rgba(0,255,148,0.3)" : "var(--border)"}` }}>
-                      <div>
-                        <div className="flex">
-                          <span style={{ fontWeight: 700, fontSize: "0.9rem" }}>{r.nome}</span>
-                          {r.stato === "active" && <span className="badge badge-green" style={{ fontSize: "0.65rem" }}><div className="pulse" />LIVE</span>}
-                          {r.stato === "completed" && <span className="badge badge-muted" style={{ fontSize: "0.65rem" }}>Completata</span>}
-                          {r.stato === "scheduled" && <span className="badge badge-blue" style={{ fontSize: "0.65rem" }}>Programmata</span>}
-                        </div>
-                        <div className="text-muted" style={{ fontSize: "0.78rem", marginTop: "0.2rem" }}>{fmtDate(r.data_inizio)} → {fmtDate(r.data_fine)}</div>
-                      </div>
-                      <div>
-                        {r.stato === "scheduled" && !activeRound && <button className="btn btn-primary btn-sm" onClick={() => startRound(r)} disabled={busy}>▶ Avvia</button>}
-                        {r.stato === "active" && <button className="btn btn-danger btn-sm" onClick={() => stopRound(r)} disabled={busy}>■ Termina</button>}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-            }
-          </>
-        )}
-
-        {tab === "squadre" && (
-          teams.length === 0 ? <div className="empty">Nessuna squadra.</div>
-            : <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                {teams.map((team, i) => (
-                  <div key={team.id} style={{ display: "grid", gridTemplateColumns: "28px 1fr auto", gap: "0.8rem", alignItems: "center", padding: "0.75rem 1rem", background: "var(--surface2)", borderRadius: "10px", border: "1px solid var(--border)" }}>
-                    <span style={{ fontFamily: "JetBrains Mono", color: "var(--muted)", fontWeight: 700, fontSize: "0.85rem" }}>#{i + 1}</span>
-                    <div>
-                      <div style={{ fontWeight: 700 }}>{team.squadra}</div>
-                      <div className="text-muted">{team.nome} {team.cognome} · {team.email}</div>
-                      <div className="team-chips">{(team.cryptos || []).map(c => <span key={c.id} className="mini-chip">{c.symbol}</span>)}</div>
-                    </div>
-                    <button onClick={() => deleteTeam(team.id)} style={{ background: "none", border: "none", color: "var(--muted)", cursor: "pointer", fontSize: "1.1rem" }}>✕</button>
+            <div className="flex mt">
+              <button className="btn btn-primary btn-sm" onClick={generateCalendar} disabled={busy}>{busy?"...":"Genera"}</button>
+              <span className="text-muted" style={{fontSize:"0.75rem"}}>⚠ Sovrascrive</span>
+            </div>
+          </div>
+          {rounds.length === 0 ? <div className="empty">Nessun calendario.</div> :
+            <div style={{display:"flex",flexDirection:"column",gap:"0.5rem"}}>{rounds.map(r => (
+              <div key={r.id} style={{display:"grid",gridTemplateColumns:"1fr auto",alignItems:"center",gap:"0.8rem",padding:"0.8rem 1rem",background:"var(--surface2)",borderRadius:"10px",border:`1px solid ${r.stato==="active"?"rgba(0,255,148,0.3)":"var(--border)"}`}}>
+                <div>
+                  <div className="flex"><span style={{fontWeight:700,fontSize:"0.9rem"}}>{r.nome}</span>
+                    {r.stato==="active"&&<span className="badge badge-green" style={{fontSize:"0.65rem"}}><div className="pulse"/>LIVE</span>}
+                    {r.stato==="completed"&&<span className="badge badge-muted" style={{fontSize:"0.65rem"}}>Completata</span>}
+                    {r.stato==="scheduled"&&<span className="badge badge-blue" style={{fontSize:"0.65rem"}}>Programmata</span>}
                   </div>
-                ))}
-              </div>
-        )}
-
-        {tab === "impostazioni" && (
-          <div className="card-sm" style={{ borderColor: "rgba(255,77,109,0.25)" }}>
-            <div style={{ fontWeight: 700, color: "var(--red)", marginBottom: "0.6rem" }}>⚠ Reset Completo</div>
-            <p className="text-muted" style={{ marginBottom: "0.8rem", lineHeight: 1.6 }}>Elimina squadre, punteggi e calendario. Irreversibile.</p>
-            {!confirmReset
-              ? <button className="btn btn-danger btn-sm" onClick={() => setConfirmReset(true)}>Reset Tutto</button>
-              : <div className="flex">
-                  <span className="text-muted">Sicuro?</span>
-                  <button className="btn btn-danger btn-sm" onClick={fullReset} disabled={busy}>Sì, cancella tutto</button>
-                  <button className="btn btn-ghost btn-sm" onClick={() => setConfirmReset(false)}>Annulla</button>
+                  <div className="text-muted" style={{fontSize:"0.78rem",marginTop:"0.2rem"}}>{fmtDate(r.data_inizio)} → {fmtDate(r.data_fine)}</div>
                 </div>
-            }
+                <div>
+                  {r.stato==="scheduled"&&!activeRound&&<button className="btn btn-primary btn-sm" onClick={() => startRound(r)} disabled={busy}>▶ Avvia</button>}
+                  {r.stato==="active"&&<button className="btn btn-danger btn-sm" onClick={() => stopRound(r)} disabled={busy}>■ Termina</button>}
+                </div>
+              </div>
+            ))}</div>
+          }
+        </>)}
+        {tab === "squadre" && (teams.length === 0 ? <div className="empty">Nessuna squadra.</div> :
+          <div style={{display:"flex",flexDirection:"column",gap:"0.5rem"}}>{teams.map((team,i) => (
+            <div key={team.id} style={{display:"grid",gridTemplateColumns:"28px 1fr auto",gap:"0.8rem",alignItems:"center",padding:"0.75rem 1rem",background:"var(--surface2)",borderRadius:"10px",border:"1px solid var(--border)"}}>
+              <span style={{fontFamily:"JetBrains Mono",color:"var(--muted)",fontWeight:700,fontSize:"0.85rem"}}>#{i+1}</span>
+              <div><div style={{fontWeight:700}}>{team.squadra}</div><div className="text-muted">{team.nome} {team.cognome} · {team.email}</div><div className="team-chips">{(team.cryptos||[]).map(c=><span key={c.id} className="mini-chip">{c.symbol}</span>)}</div></div>
+              <button onClick={() => deleteTeam(team.id)} style={{background:"none",border:"none",color:"var(--muted)",cursor:"pointer",fontSize:"1.1rem"}}>✕</button>
+            </div>
+          ))}</div>
+        )}
+        {tab === "impostazioni" && (
+          <div className="card-sm" style={{borderColor:"rgba(255,77,109,0.25)"}}>
+            <div style={{fontWeight:700,color:"var(--red)",marginBottom:"0.6rem"}}>⚠ Reset Completo</div>
+            <p className="text-muted" style={{marginBottom:"0.8rem",lineHeight:1.6}}>Elimina squadre, punteggi e calendario. Irreversibile.</p>
+            {!confirmReset ? <button className="btn btn-danger btn-sm" onClick={() => setConfirmReset(true)}>Reset Tutto</button> :
+              <div className="flex"><span className="text-muted">Sicuro?</span><button className="btn btn-danger btn-sm" onClick={fullReset} disabled={busy}>Sì, cancella tutto</button><button className="btn btn-ghost btn-sm" onClick={() => setConfirmReset(false)}>Annulla</button></div>}
           </div>
         )}
       </div>
