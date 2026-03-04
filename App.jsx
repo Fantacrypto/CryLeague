@@ -50,59 +50,113 @@ function calcScore(cryptos, startPrices, endPrices) {
   return count ? total / count : null;
 }
 
+// Logo SVG del brand
+const LogoSVG = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="265 80 1090 175" style={{width:"100%",maxWidth:"520px",height:"auto",display:"block",margin:"0 auto"}}>
+    <defs>
+      <filter x="0%" y="0%" width="100%" height="100%" id="d44ad22488"><feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" colorInterpolationFilters="sRGB"/></filter>
+      <filter x="0%" y="0%" width="100%" height="100%" id="7aa3a021ed"><feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.2126 0.7152 0.0722 0 0" colorInterpolationFilters="sRGB"/></filter>
+      <clipPath id="0b999db500"><path d="M 1 1 L 241.765625 1 L 241.765625 279.816406 L 1 279.816406 Z M 1 1" clipRule="nonzero"/></clipPath>
+      <mask id="793df11155">
+        <g filter="url(#d44ad22488)">
+          <g filter="url(#7aa3a021ed)" transform="matrix(0.302683, 0, 0, 0.303529, 0.828732, 0.535974)">
+            <image x="0" y="0" width="796" xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAxwAAAOYCAAAAAB6TaoaAAAAAmJLR0QA/4ePzL8AABcOSURBVHic7d3Jdt24skBB2v//z1UDuZHkk9JpCDCbiMmbvHUXQWIzQVl2/Tg43X9v/+fHtVfBqzzAl/33wP+v212Jp/WkR5K4wX0vwEN61ItVfOYB5OXZ3O/kLN7xFFLyWO6yrot3PItkPJBvbQnjDw8kD8/iS3vD+M1DycFzCF0Txm8ezPU8g5uuDeM3D+da7v+/cpTxiwd0Hff+k1Rl/OIhXcN9fy9jGW88pwu46X/kLeONR7WbO/5L9jSO4/C0NnO7j6NIGW88sH3c61JpHMfhmW0z/kZXK+PN+Me2xfC7XDOM4zjGP7kdRt/iwmkcxzH84W0w+P5WT+M4Rj++Dcbe3Q5pHMcx+AmuN/TWtknjOI6xD3G5kfe1VxrHMfQxLjfwrvZL4ziOkU9ytXG3tGkaxzHwWa427IY2TuM4jnGPc7FRd7N7Gscx7IEuNuheTkjjOEY90sXG3MkpaRzHoIe62JD7OCmN4xjzWBcbcRenpXEcQx7sYgPu4cQ0juMY8WzXan8Dx6ZxHAOe7lrdb9/oNo7+z3ep3jdvehrH0f0JL9X51injTednvFTfGyeNv/o+5aW63jZpfNT1OS/V86ZJ4x89H/RaHe+ZNG7q+KjX6nfHpBHq97DX6na/pPGlbo97rV53Sxrf6vXA1+p0r6Rxl06PfK0+d0oad+vz0NfqcK6k8YguT32xHrdJGo/q8dwX63CTpPGMDk9+sfq3SBrPqv/sF6t+g6TxguoPf7Xa90caL6r9+FerfHekcYLKG2C1uvdGGueouwOWq3prpHGeqntguZo3RhqnqrkJ1qt4X6RxuobLYL16d0UaS9TbCOtVuyfSWKXaThing1P7LmZxlA0YnDWZqoYuXPHxqh9Ni9+U4X8Td26Z4gAAAABJRU5ErkJggg==" height="920" preserveAspectRatio="xMidYMid meet"/>
+          </g>
+        </g>
+      </mask>
+      <clipPath id="9e30d40635"><rect x="0" width="1385" y="0" height="280"/></clipPath>
+    </defs>
+    <g transform="matrix(1, 0, 0, 1, 15, 6)">
+      <g fill="#ffffff" fillOpacity="1">
+        <g transform="translate(265.504528, 147.520755)"><g><path d="M 78.640625 -120.8125 L 78.640625 -96.65625 L 36.3125 -96.65625 L 36.3125 -72.640625 L 75.421875 -72.640625 L 75.421875 -48.46875 L 36.3125 -48.46875 L 36.3125 0 L 8.78125 0 L 8.78125 -120.8125 Z"/></g></g>
+        <g transform="translate(344.286071, 147.520755)"><g><path d="M 70.140625 -120.8125 L 118.90625 0 L 89.328125 0 L 80.390625 -24.15625 L 34.40625 -24.15625 L 25.484375 0 L -4.09375 0 L 44.65625 -120.8125 Z M 71.015625 -48.328125 L 57.546875 -83.46875 L 57.25 -83.46875 L 43.78125 -48.328125 Z"/></g></g>
+        <g transform="translate(459.969022, 147.520755)"><g><path d="M 36.3125 -74.96875 L 36.3125 0 L 8.78125 0 L 8.78125 -120.8125 L 36.3125 -120.8125 L 84.34375 -45.828125 L 84.640625 -45.828125 L 84.640625 -120.8125 L 112.171875 -120.8125 L 112.171875 0 L 84.640625 0 L 36.609375 -74.96875 Z"/></g></g>
+        <g transform="translate(574.773382, 147.520755)"><g><path d="M 1.171875 -96.65625 L 1.171875 -120.8125 L 86.109375 -120.8125 L 86.109375 -96.65625 L 57.40625 -96.65625 L 57.40625 0 L 29.875 0 L 29.875 -96.65625 Z"/></g></g>
+        <g transform="translate(655.897885, 147.520755)"><g><path d="M 70.140625 -120.8125 L 118.90625 0 L 89.328125 0 L 80.390625 -24.15625 L 34.40625 -24.15625 L 25.484375 0 L -4.09375 0 L 44.65625 -120.8125 Z M 71.015625 -48.328125 L 57.546875 -83.46875 L 57.25 -83.46875 L 43.78125 -48.328125 Z"/></g></g>
+        <g transform="translate(766.894918, 147.520755)"><g><path d="M 73.078125 -24.890625 C 77.273438 -24.890625 81.347656 -25.523438 85.296875 -26.796875 C 89.253906 -28.066406 92.160156 -29.285156 94.015625 -30.453125 L 96.796875 -32.359375 L 108.515625 -8.9375 C 108.117188 -8.644531 107.578125 -8.253906 106.890625 -7.765625 C 106.210938 -7.273438 104.628906 -6.367188 102.140625 -5.046875 C 99.648438 -3.734375 96.988281 -2.585938 94.15625 -1.609375 C 91.320312 -0.628906 87.609375 0.25 83.015625 1.03125 C 78.429688 1.8125 73.703125 2.203125 68.828125 2.203125 C 57.597656 2.203125 46.953125 -0.550781 36.890625 -6.0625 C 26.835938 -11.582031 18.738281 -19.175781 12.59375 -28.84375 C 6.445312 -38.507812 3.375 -48.957031 3.375 -60.1875 C 3.375 -68.675781 5.175781 -76.828125 8.78125 -84.640625 C 12.394531 -92.453125 17.203125 -99.140625 23.203125 -104.703125 C 29.210938 -110.265625 36.21875 -114.703125 44.21875 -118.015625 C 52.226562 -121.335938 60.429688 -123 68.828125 -123 C 76.640625 -123 83.835938 -122.070312 90.421875 -120.21875 C 97.015625 -118.363281 101.675781 -116.507812 104.40625 -114.65625 L 108.515625 -111.875 L 96.796875 -88.453125 C 96.109375 -89.035156 95.082031 -89.738281 93.71875 -90.5625 C 92.351562 -91.394531 89.617188 -92.492188 85.515625 -93.859375 C 81.421875 -95.234375 77.273438 -95.921875 73.078125 -95.921875 C 66.429688 -95.921875 60.472656 -94.84375 55.203125 -92.6875 C 49.929688 -90.539062 45.757812 -87.710938 42.6875 -84.203125 C 39.613281 -80.691406 37.269531 -76.910156 35.65625 -72.859375 C 34.039062 -68.804688 33.234375 -64.679688 33.234375 -60.484375 C 33.234375 -51.304688 36.675781 -43.078125 43.5625 -35.796875 C 50.445312 -28.523438 60.285156 -24.890625 73.078125 -24.890625 Z"/></g></g>
+        <g transform="translate(878.038435, 147.520755)"><g><path d="M 8.78125 -120.8125 L 51.984375 -120.8125 C 63.597656 -120.8125 73.066406 -117.710938 80.390625 -111.515625 C 87.710938 -105.316406 91.375 -96.457031 91.375 -84.9375 C 91.375 -76.050781 89.148438 -68.601562 84.703125 -62.59375 C 80.265625 -56.59375 74.238281 -52.375 66.625 -49.9375 L 108.21875 0 L 73.21875 0 L 36.3125 -47.734375 L 36.3125 0 L 8.78125 0 Z M 36.3125 -67.21875 L 39.53125 -67.21875 C 42.070312 -67.21875 44.222656 -67.265625 45.984375 -67.359375 C 47.742188 -67.453125 49.742188 -67.789062 51.984375 -68.375 C 54.234375 -68.96875 56.039062 -69.800781 57.40625 -70.875 C 58.769531 -71.945312 59.9375 -73.507812 60.90625 -75.5625 C 61.882812 -77.613281 62.375 -80.101562 62.375 -83.03125 C 62.375 -85.957031 61.882812 -88.445312 60.90625 -90.5 C 59.9375 -92.550781 58.769531 -94.113281 57.40625 -95.1875 C 56.039062 -96.257812 54.234375 -97.085938 51.984375 -97.671875 C 49.742188 -98.253906 47.742188 -98.59375 45.984375 -98.6875 C 44.222656 -98.789062 42.070312 -98.84375 39.53125 -98.84375 L 36.3125 -98.84375 Z"/></g></g>
+        <g transform="translate(970.584764, 147.520755)"><g><path d="M -4.390625 -120.8125 L 28.703125 -120.8125 L 53.890625 -82.15625 L 79.078125 -120.8125 L 112.171875 -120.8125 L 67.65625 -54.1875 L 67.65625 0 L 40.125 0 L 40.125 -54.1875 Z"/></g></g>
+        <g transform="translate(1079.23889, 147.520755)"><g><path d="M 8.78125 -120.8125 L 52.859375 -120.8125 C 65.160156 -120.8125 75.117188 -117.640625 82.734375 -111.296875 C 90.347656 -104.953125 94.15625 -95.722656 94.15625 -83.609375 C 94.15625 -71.503906 90.296875 -62.007812 82.578125 -55.125 C 74.867188 -48.25 64.960938 -44.8125 52.859375 -44.8125 L 36.3125 -44.8125 L 36.3125 0 L 8.78125 0 Z M 36.3125 -66.78125 L 44.078125 -66.78125 C 50.222656 -66.78125 55.273438 -68.023438 59.234375 -70.515625 C 63.191406 -73.003906 65.171875 -77.078125 65.171875 -82.734375 C 65.171875 -88.492188 63.191406 -92.617188 59.234375 -95.109375 C 55.273438 -97.597656 50.222656 -98.84375 44.078125 -98.84375 L 36.3125 -98.84375 Z"/></g></g>
+        <g transform="translate(1170.613818, 147.520755)"><g><path d="M 1.171875 -96.65625 L 1.171875 -120.8125 L 86.109375 -120.8125 L 86.109375 -96.65625 L 57.40625 -96.65625 L 57.40625 0 L 29.875 0 L 29.875 -96.65625 Z"/></g></g>
+        <g transform="translate(1254.081227, 147.520755)"><g><path d="M 3.375 -60.484375 C 3.375 -77.953125 9.328125 -92.738281 21.234375 -104.84375 C 33.140625 -116.945312 47.488281 -123 64.28125 -123 C 81.175781 -123 95.53125 -116.972656 107.34375 -104.921875 C 119.15625 -92.867188 125.0625 -78.054688 125.0625 -60.484375 C 125.0625 -42.804688 119.25 -27.9375 107.625 -15.875 C 96.007812 -3.820312 81.5625 2.203125 64.28125 2.203125 C 46.613281 2.203125 32.046875 -3.773438 20.578125 -15.734375 C 9.109375 -27.703125 3.375 -42.617188 3.375 -60.484375 Z M 33.09375 -60.484375 C 33.09375 -54.128906 34.066406 -48.34375 36.015625 -43.125 C 37.972656 -37.90625 41.390625 -33.488281 46.265625 -29.875 C 51.148438 -26.257812 57.15625 -24.453125 64.28125 -24.453125 C 74.53125 -24.453125 82.265625 -27.96875 87.484375 -35 C 92.710938 -42.03125 95.328125 -50.523438 95.328125 -60.484375 C 95.328125 -70.335938 92.664062 -78.800781 87.34375 -85.875 C 82.03125 -92.957031 74.34375 -96.5 64.28125 -96.5 C 54.320312 -96.5 46.632812 -92.957031 41.21875 -85.875 C 35.800781 -78.800781 33.09375 -70.335938 33.09375 -60.484375 Z"/></g></g>
+      </g>
+      <g fill="#0AB198" fillOpacity="1">
+        <g transform="translate(268.349956, 238.559734)"><g><path d="M 7.15625 0 L 7.15625 -69.46875 L 23.5 -69.46875 L 23.5 -16.34375 L 47.8125 -16.34375 L 47.8125 0 Z"/></g></g>
+        <g transform="translate(317.184, 238.559734)"><g><path d="M 7.15625 0 L 7.15625 -69.46875 L 53.9375 -69.46875 L 53.9375 -53.125 L 21.453125 -53.125 L 21.453125 -42.90625 L 47.8125 -42.90625 L 47.8125 -26.5625 L 21.453125 -26.5625 L 21.453125 -16.34375 L 53.9375 -16.34375 L 53.9375 0 Z"/></g></g>
+        <g transform="translate(373.169474, 238.559734)"><g><path d="M 6.125 0 L 26.65625 -69.46875 L 51.59375 -69.46875 L 72.125 0 L 54.546875 0 L 51.484375 -10.71875 L 26.765625 -10.71875 L 23.703125 0 Z M 31.359375 -27.078125 L 46.890625 -27.078125 L 39.9375 -51.28125 L 38.3125 -51.28125 Z"/></g></g>
+        <g transform="translate(442.231836, 238.559734)"><g><path d="M 34.9375 0 C 28.53125 0 23.113281 -1.476562 18.6875 -4.4375 C 14.257812 -7.40625 10.890625 -11.492188 8.578125 -16.703125 C 6.265625 -21.910156 5.109375 -27.921875 5.109375 -34.734375 C 5.109375 -41.546875 6.300781 -47.554688 8.6875 -52.765625 C 11.070312 -57.972656 14.660156 -62.054688 19.453125 -65.015625 C 24.253906 -67.984375 30.265625 -69.46875 37.484375 -69.46875 C 43.347656 -69.46875 48.523438 -68.445312 53.015625 -66.40625 C 57.515625 -64.363281 61.109375 -61.570312 63.796875 -58.03125 C 66.484375 -54.488281 68 -50.503906 68.34375 -46.078125 L 52 -46.078125 C 51.113281 -48.523438 49.507812 -50.3125 47.1875 -51.4375 C 44.875 -52.5625 41.640625 -53.125 37.484375 -53.125 C 34.148438 -53.125 31.273438 -52.59375 28.859375 -51.53125 C 26.441406 -50.476562 24.601562 -48.625 23.34375 -45.96875 C 22.082031 -43.3125 21.453125 -39.566406 21.453125 -34.734375 C 21.453125 -29.960938 22.113281 -26.234375 23.4375 -23.546875 C 24.769531 -20.859375 26.726562 -18.984375 29.3125 -17.921875 C 31.90625 -16.867188 35.144531 -16.34375 39.03125 -16.34375 C 42.90625 -16.34375 46.320312 -17.039062 49.28125 -18.4375 C 52.25 -19.832031 54.175781 -22.503906 55.0625 -26.453125 L 34.421875 -26.453125 L 34.421875 -38.71875 L 71.40625 -38.71875 L 71.40625 0 L 55.0625 0 L 55.0625 -9.703125 L 53.421875 -9.703125 C 52.816406 -8.410156 51.8125 -7 50.40625 -5.46875 C 49.007812 -3.9375 47.050781 -2.640625 44.53125 -1.578125 C 42.019531 -0.523438 38.820312 0 34.9375 0 Z"/></g></g>
+        <g transform="translate(517.730488, 238.559734)"><g><path d="M 37.1875 0 C 31.1875 0 25.835938 -0.953125 21.140625 -2.859375 C 16.441406 -4.765625 12.765625 -7.691406 10.109375 -11.640625 C 7.453125 -15.597656 6.125 -20.570312 6.125 -26.5625 L 6.125 -69.46875 L 22.46875 -69.46875 L 22.46875 -30.640625 C 22.46875 -27.234375 22.859375 -24.472656 23.640625 -22.359375 C 24.429688 -20.253906 25.878906 -18.722656 27.984375 -17.765625 C 30.097656 -16.816406 33.164062 -16.34375 37.1875 -16.34375 C 41.207031 -16.34375 44.269531 -16.816406 46.375 -17.765625 C 48.488281 -18.722656 49.9375 -20.253906 50.71875 -22.359375 C 51.5 -24.472656 51.890625 -27.234375 51.890625 -30.640625 L 51.890625 -69.46875 L 68.234375 -69.46875 L 68.234375 -26.5625 C 68.234375 -20.570312 66.90625 -15.597656 64.25 -11.640625 C 61.59375 -7.691406 57.929688 -4.765625 53.265625 -2.859375 C 48.609375 -0.953125 43.25 0 37.1875 0 Z"/></g></g>
+        <g transform="translate(589.040483, 238.559734)"><g><path d="M 7.15625 0 L 7.15625 -69.46875 L 53.9375 -69.46875 L 53.9375 -53.125 L 21.453125 -53.125 L 21.453125 -42.90625 L 47.8125 -42.90625 L 47.8125 -26.5625 L 21.453125 -26.5625 L 21.453125 -16.34375 L 53.9375 -16.34375 L 53.9375 0 Z"/></g></g>
+        <g transform="translate(648.090851, 238.559734)"><g><path d="M 6.125 0 L 6.125 -16.34375 L 22.46875 -16.34375 L 22.46875 0 Z"/></g></g>
+        <g transform="translate(675.674958, 238.559734)"><g><path d="M 7.15625 0 L 7.15625 -69.46875 L 23.5 -69.46875 L 23.5 0 Z"/></g></g>
+        <g transform="translate(702.237421, 238.559734)"><g><path d="M 39.03125 0 C 31.945312 0 25.863281 -1.546875 20.78125 -4.640625 C 15.707031 -7.742188 11.828125 -11.914062 9.140625 -17.15625 C 6.453125 -22.40625 5.109375 -28.265625 5.109375 -34.734375 C 5.109375 -41.203125 6.453125 -47.054688 9.140625 -52.296875 C 11.828125 -57.546875 15.707031 -61.71875 20.78125 -64.8125 C 25.863281 -67.914062 31.945312 -69.46875 39.03125 -69.46875 C 46.101562 -69.46875 52.175781 -67.914062 57.25 -64.8125 C 62.332031 -61.71875 66.21875 -57.546875 68.90625 -52.296875 C 71.59375 -47.054688 72.9375 -41.203125 72.9375 -34.734375 C 72.9375 -28.265625 71.59375 -22.40625 68.90625 -17.15625 C 66.21875 -11.914062 62.332031 -7.742188 57.25 -4.640625 C 52.175781 -1.546875 46.101562 0 39.03125 0 Z M 39.03125 -16.34375 C 42.425781 -16.34375 45.4375 -16.90625 48.0625 -18.03125 C 50.6875 -19.15625 52.765625 -21.0625 54.296875 -23.75 C 55.828125 -26.4375 56.59375 -30.097656 56.59375 -34.734375 C 56.59375 -39.367188 55.828125 -43.03125 54.296875 -45.71875 C 52.765625 -48.40625 50.6875 -50.3125 48.0625 -51.4375 C 45.4375 -52.5625 42.425781 -53.125 39.03125 -53.125 C 35.6875 -53.125 32.6875 -52.5625 30.03125 -51.4375 C 27.375 -50.3125 25.28125 -48.40625 23.75 -45.71875 C 22.21875 -43.03125 21.453125 -39.367188 21.453125 -34.734375 C 21.453125 -30.097656 22.21875 -26.4375 23.75 -23.75 C 25.28125 -21.0625 27.375 -19.15625 30.03125 -18.03125 C 32.6875 -16.90625 35.6875 -16.34375 39.03125 -16.34375 Z"/></g></g>
+      </g>
+    </g>
+  </svg>
+);
+
 const css = `
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#07090e;--surface:#0d1219;--surface2:#131920;--surface3:#1a2230;--border:#1e2a3a;--accent:#00ff94;--accent2:#00bfff;--red:#ff4d6d;--text:#e6edf3;--muted:#5d7a96;--gold:#ffd700;}
+:root{
+  --bg:#0B0F10;
+  --surface:#12181A;
+  --surface2:#12181A;
+  --surface3:#033E41;
+  --border:#033E41;
+  --accent:#2BD9C3;
+  --accent2:#0AB198;
+  --red:#ff4d6d;
+  --text:#FFFFFF;
+  --muted:#6aada6;
+  --gold:#ffd700;
+}
 body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh}
 .app{max-width:960px;margin:0 auto;padding:1rem 1rem 4rem}
-.header{text-align:center;padding:2.5rem 0 1.5rem;position:relative}
-.header-bg{position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:500px;height:300px;background:radial-gradient(ellipse,rgba(0,255,148,0.06) 0%,transparent 65%);pointer-events:none}
-.logo{font-size:2.4rem;font-weight:800;letter-spacing:-2px}
-.logo span{color:var(--accent)}
-.subtitle{color:var(--muted);font-size:0.78rem;letter-spacing:4px;text-transform:uppercase;margin-top:0.4rem;font-family:'JetBrains Mono',monospace}
+.header{text-align:center;padding:2rem 0 1.5rem;position:relative}
+.header-bg{position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:600px;height:320px;background:radial-gradient(ellipse,rgba(43,217,195,0.08) 0%,transparent 65%);pointer-events:none}
 .nav{display:flex;gap:0.4rem;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0.4rem;max-width:460px;margin:0 auto 2rem}
 .nav-btn{padding:0.55rem 1rem;border-radius:8px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:600;transition:all 0.2s;flex:1;text-align:center}
 .nav-btn:hover{color:var(--text)}
-.nav-btn.active{background:var(--surface3);color:var(--accent);box-shadow:0 0 0 1px var(--border)}
+.nav-btn.active{background:var(--surface3);color:var(--accent);box-shadow:0 0 0 1px rgba(43,217,195,0.3)}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1rem}
-.card-sm{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1rem}
+.card-sm{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:1rem}
 .card-title{font-size:0.78rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:1.2rem;font-family:'JetBrains Mono',monospace}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
 @media(max-width:600px){.form-grid{grid-template-columns:1fr}}
 .field{display:flex;flex-direction:column;gap:0.4rem}
 .field.full{grid-column:1/-1}
 label{font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-family:'JetBrains Mono',monospace}
-input{background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.65rem 0.9rem;font-family:'Syne',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;width:100%}
+input{background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.65rem 0.9rem;font-family:'Syne',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;width:100%}
 input:focus{border-color:var(--accent)}
 input::placeholder{color:var(--muted)}
 .crypto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:0.45rem;margin-top:0.5rem}
-.crypto-chip{padding:0.5rem 0.6rem;border-radius:8px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;text-align:center;transition:all 0.15s;user-select:none}
+.crypto-chip{padding:0.5rem 0.6rem;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer;text-align:center;transition:all 0.15s;user-select:none}
 .crypto-chip:hover{border-color:var(--accent2)}
-.crypto-chip.selected{border-color:var(--accent);background:rgba(0,255,148,0.07);color:var(--accent)}
+.crypto-chip.selected{border-color:var(--accent);background:rgba(43,217,195,0.08);color:var(--accent)}
 .crypto-chip.disabled{opacity:0.35;cursor:not-allowed}
 .crypto-sym{font-weight:700;font-family:'JetBrains Mono',monospace;font-size:0.85rem}
 .crypto-name{color:var(--muted);font-size:0.68rem;margin-top:1px}
 .btn{padding:0.65rem 1.4rem;border-radius:8px;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;transition:all 0.18s}
-.btn-primary{background:var(--accent);color:#000}
-.btn-primary:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-primary{background:var(--accent2);color:#fff}
+.btn-primary:hover{background:var(--accent);color:#0B0F10;transform:translateY(-1px)}
 .btn-danger{background:var(--red);color:#fff}
 .btn-outline{background:transparent;border:1px solid var(--accent);color:var(--accent)}
-.btn-outline:hover{background:rgba(0,255,148,0.07)}
+.btn-outline:hover{background:rgba(43,217,195,0.08)}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
 .btn-ghost:hover{border-color:var(--text);color:var(--text)}
 .btn-google{background:#fff;color:#222;display:flex;align-items:center;justify-content:center;gap:0.6rem;width:100%;font-size:0.95rem;padding:0.8rem;border-radius:8px;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;transition:all 0.18s}
-.btn-google:hover{background:#f5f5f5}
+.btn-google:hover{background:#f0faf9}
 .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;filter:none!important}
 .btn-sm{padding:0.35rem 0.9rem;font-size:0.78rem;border-radius:6px}
 .badge{display:inline-flex;align-items:center;gap:0.4rem;padding:0.25rem 0.75rem;border-radius:20px;font-size:0.72rem;font-family:'JetBrains Mono',monospace;font-weight:600}
-.badge-green{background:rgba(0,255,148,0.08);color:var(--accent);border:1px solid rgba(0,255,148,0.25)}
-.badge-blue{background:rgba(0,191,255,0.08);color:var(--accent2);border:1px solid rgba(0,191,255,0.25)}
+.badge-green{background:rgba(43,217,195,0.1);color:var(--accent);border:1px solid rgba(43,217,195,0.3)}
+.badge-blue{background:rgba(10,177,152,0.1);color:var(--accent2);border:1px solid rgba(10,177,152,0.3)}
 .badge-muted{background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
 .pulse{width:5px;height:5px;border-radius:50%;background:currentColor;animation:pulse 1.4s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.25}}
 .lb-table{display:flex;flex-direction:column;gap:0.4rem}
-.lb-row{display:grid;align-items:center;gap:0.8rem;padding:0.85rem 1rem;border-radius:10px;background:var(--surface2);border:1px solid var(--border)}
+.lb-row{display:grid;align-items:center;gap:0.8rem;padding:0.85rem 1rem;border-radius:10px;background:var(--bg);border:1px solid var(--border)}
 .lb-row.top1{border-color:rgba(255,215,0,0.4);background:rgba(255,215,0,0.03)}
 .lb-row.top2{border-color:rgba(192,192,192,0.35)}
 .lb-row.top3{border-color:rgba(205,127,50,0.35)}
@@ -112,11 +166,11 @@ input::placeholder{color:var(--muted)}
 .lb-score{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:0.95rem;text-align:right}
 .pos{color:var(--accent)}.neg{color:var(--red)}.neutral{color:var(--muted)}
 .team-chips{display:flex;flex-wrap:wrap;gap:0.25rem;margin-top:0.35rem}
-.mini-chip{padding:0.12rem 0.45rem;border-radius:4px;background:rgba(0,255,148,0.07);border:1px solid rgba(0,255,148,0.18);font-size:0.65rem;font-family:'JetBrains Mono',monospace;color:var(--accent)}
+.mini-chip{padding:0.12rem 0.45rem;border-radius:4px;background:rgba(43,217,195,0.08);border:1px solid rgba(43,217,195,0.2);font-size:0.65rem;font-family:'JetBrains Mono',monospace;color:var(--accent)}
 .calendar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:0.6rem}
-.round-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1rem;cursor:pointer;transition:all 0.18s}
+.round-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:1rem;cursor:pointer;transition:all 0.18s}
 .round-card:hover{border-color:var(--accent2);transform:translateY(-2px)}
-.round-card.active-round{border-color:rgba(0,255,148,0.4);background:rgba(0,255,148,0.04)}
+.round-card.active-round{border-color:rgba(43,217,195,0.5);background:rgba(43,217,195,0.04)}
 .round-card.completed-round{opacity:0.75}
 .round-card.selected-round{border-color:var(--accent2)}
 .round-num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.4rem;color:var(--accent);line-height:1}
@@ -127,16 +181,16 @@ input::placeholder{color:var(--muted)}
 .tab:hover{color:var(--text)}
 .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 .alert{padding:0.8rem 1rem;border-radius:8px;font-size:0.84rem;margin-bottom:1rem;line-height:1.5}
-.alert-success{background:rgba(0,255,148,0.07);border:1px solid rgba(0,255,148,0.25);color:var(--accent)}
-.alert-error{background:rgba(255,77,109,0.07);border:1px solid rgba(255,77,109,0.25);color:var(--red)}
-.alert-info{background:rgba(0,191,255,0.07);border:1px solid rgba(0,191,255,0.25);color:var(--accent2)}
+.alert-success{background:rgba(43,217,195,0.08);border:1px solid rgba(43,217,195,0.3);color:var(--accent)}
+.alert-error{background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.3);color:var(--red)}
+.alert-info{background:rgba(10,177,152,0.08);border:1px solid rgba(10,177,152,0.3);color:var(--accent2)}
 .flex{display:flex;align-items:center;gap:0.7rem;flex-wrap:wrap}
 .flex-between{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
 .mt{margin-top:1rem}
 .text-muted{color:var(--muted);font-size:0.82rem}
 .loading{text-align:center;padding:3rem;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:0.85rem}
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0.8rem;margin-bottom:1.2rem}
-.stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center}
+.stat-box{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center}
 .stat-num{font-size:1.8rem;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--accent)}
 .stat-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-top:0.3rem}
 .empty{text-align:center;padding:2.5rem;color:var(--muted);font-size:0.85rem}
@@ -182,9 +236,9 @@ export default function App() {
       <div className="app">
         <header className="header">
           <div className="header-bg" />
-          <div className="logo">Crypto<span>League</span></div>
-          <div className="subtitle">Fantasy Crypto Championship · Alpha</div>
+          <LogoSVG />
         </header>
+
         {user && !isAdmin && (
           <div className="user-bar">
             <div className="user-info">
@@ -197,6 +251,7 @@ export default function App() {
             <button className="btn btn-ghost btn-sm" onClick={() => supabase.auth.signOut()}>Esci</button>
           </div>
         )}
+
         <nav className="nav">
           {!isAdmin && (<>
             <button className={`nav-btn ${page === "squadra" ? "active" : ""}`} onClick={() => setPage("squadra")}>La mia squadra</button>
@@ -204,6 +259,7 @@ export default function App() {
           </>)}
           {isAdmin && <button className={`nav-btn ${page === "admin" ? "active" : ""}`} onClick={() => setPage("admin")}>Admin</button>}
         </nav>
+
         {page === "squadra" && !isAdmin && (user ? <SquadraPage user={user} /> : <LoginPage onLogin={signInWithGoogle} />)}
         {page === "leaderboard" && <LeaderboardPage />}
         {page === "admin" && isAdmin && <AdminPage adminAuthed={adminAuthed} setAdminAuthed={setAdminAuthed} />}
@@ -216,7 +272,7 @@ function LoginPage({ onLogin }) {
   return (
     <div className="card" style={{ maxWidth: 400, margin: "0 auto", textAlign: "center" }}>
       <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🏆</div>
-      <div style={{ fontWeight: 800, fontSize: "1.3rem", marginBottom: "0.4rem" }}>Entra in CryptoLeague</div>
+      <div style={{ fontWeight: 800, fontSize: "1.3rem", marginBottom: "0.4rem" }}>Entra in FantaCrypto</div>
       <p className="text-muted" style={{ marginBottom: "1.5rem", lineHeight: 1.6 }}>Accedi con Google per registrare la tua squadra e competere nella classifica.</p>
       <button className="btn-google" onClick={onLogin}>
         <svg width="20" height="20" viewBox="0 0 48 48">
@@ -299,7 +355,7 @@ function SquadraPage({ user }) {
           <div style={{ fontSize: "0.75rem", color: "var(--muted)", marginBottom: "0.5rem", fontFamily: "JetBrains Mono", textTransform: "uppercase", letterSpacing: "1px" }}>Le tue 5 crypto</div>
           <div className="team-chips" style={{ gap: "0.4rem" }}>
             {team.cryptos.map(c => (
-              <span key={c.id} style={{ padding: "0.4rem 0.8rem", borderRadius: "8px", background: "rgba(0,255,148,0.08)", border: "1px solid rgba(0,255,148,0.25)", fontSize: "0.85rem", fontFamily: "JetBrains Mono", fontWeight: 700, color: "var(--accent)" }}>
+              <span key={c.id} style={{ padding: "0.4rem 0.8rem", borderRadius: "8px", background: "rgba(43,217,195,0.08)", border: "1px solid rgba(43,217,195,0.25)", fontSize: "0.85rem", fontFamily: "JetBrains Mono", fontWeight: 700, color: "var(--accent)" }}>
                 {c.symbol} <span style={{ color: "var(--muted)", fontWeight: 400 }}>{c.name}</span>
               </span>
             ))}
@@ -584,7 +640,7 @@ function AdminPage({ adminAuthed, setAdminAuthed }) {
           </div>
           {rounds.length === 0 ? <div className="empty">Nessun calendario.</div> :
             <div style={{display:"flex",flexDirection:"column",gap:"0.5rem"}}>{rounds.map(r => (
-              <div key={r.id} style={{display:"grid",gridTemplateColumns:"1fr auto",alignItems:"center",gap:"0.8rem",padding:"0.8rem 1rem",background:"var(--surface2)",borderRadius:"10px",border:`1px solid ${r.stato==="active"?"rgba(0,255,148,0.3)":"var(--border)"}`}}>
+              <div key={r.id} style={{display:"grid",gridTemplateColumns:"1fr auto",alignItems:"center",gap:"0.8rem",padding:"0.8rem 1rem",background:"var(--bg)",borderRadius:"10px",border:`1px solid ${r.stato==="active"?"rgba(43,217,195,0.4)":"var(--border)"}`}}>
                 <div>
                   <div className="flex"><span style={{fontWeight:700,fontSize:"0.9rem"}}>{r.nome}</span>
                     {r.stato==="active"&&<span className="badge badge-green" style={{fontSize:"0.65rem"}}><div className="pulse"/>LIVE</span>}
@@ -603,7 +659,7 @@ function AdminPage({ adminAuthed, setAdminAuthed }) {
         </>)}
         {tab === "squadre" && (teams.length === 0 ? <div className="empty">Nessuna squadra.</div> :
           <div style={{display:"flex",flexDirection:"column",gap:"0.5rem"}}>{teams.map((team,i) => (
-            <div key={team.id} style={{display:"grid",gridTemplateColumns:"28px 1fr auto",gap:"0.8rem",alignItems:"center",padding:"0.75rem 1rem",background:"var(--surface2)",borderRadius:"10px",border:"1px solid var(--border)"}}>
+            <div key={team.id} style={{display:"grid",gridTemplateColumns:"28px 1fr auto",gap:"0.8rem",alignItems:"center",padding:"0.75rem 1rem",background:"var(--bg)",borderRadius:"10px",border:"1px solid var(--border)"}}>
               <span style={{fontFamily:"JetBrains Mono",color:"var(--muted)",fontWeight:700,fontSize:"0.85rem"}}>#{i+1}</span>
               <div><div style={{fontWeight:700}}>{team.squadra}</div><div className="text-muted">{team.nome} {team.cognome} · {team.email}</div><div className="team-chips">{(team.cryptos||[]).map(c=><span key={c.id} className="mini-chip">{c.symbol}</span>)}</div></div>
               <button onClick={() => deleteTeam(team.id)} style={{background:"none",border:"none",color:"var(--muted)",cursor:"pointer",fontSize:"1.1rem"}}>✕</button>
