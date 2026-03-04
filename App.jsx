@@ -8,9 +8,10 @@ const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "password";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const TOP_CRYPTOS = [
+const FALLBACK_CRYPTOS = [
   { id: "bitcoin",       symbol: "BTC",  name: "Bitcoin" },
   { id: "ethereum",      symbol: "ETH",  name: "Ethereum" },
+  { id: "tether",        symbol: "USDT", name: "Tether" },
   { id: "binancecoin",   symbol: "BNB",  name: "BNB" },
   { id: "solana",        symbol: "SOL",  name: "Solana" },
   { id: "ripple",        symbol: "XRP",  name: "XRP" },
@@ -24,7 +25,24 @@ const TOP_CRYPTOS = [
   { id: "tron",          symbol: "TRX",  name: "TRON" },
   { id: "uniswap",       symbol: "UNI",  name: "Uniswap" },
   { id: "litecoin",      symbol: "LTC",  name: "Litecoin" },
+  { id: "dai",           symbol: "DAI",  name: "Dai" },
+  { id: "cosmos",        symbol: "ATOM", name: "Cosmos" },
+  { id: "monero",        symbol: "XMR",  name: "Monero" },
+  { id: "ethereum-classic", symbol: "ETC", name: "Ethereum Classic" },
 ];
+
+async function fetchTop100Cryptos() {
+  try {
+    const res = await fetch(
+      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false"
+    );
+    if (!res.ok) throw new Error("rate limit");
+    const data = await res.json();
+    return data.map(c => ({ id: c.id, symbol: c.symbol.toUpperCase(), name: c.name }));
+  } catch {
+    return FALLBACK_CRYPTOS;
+  }
+}
 
 const fmt = (s) => {
   if (s === null || s === undefined) return "—";
@@ -296,8 +314,18 @@ function SquadraPage({ user }) {
   const [selected, setSelected] = useState([]);
   const [status, setStatus] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [cryptoList, setCryptoList] = useState(FALLBACK_CRYPTOS);
+  const [cryptoSearch, setCryptoSearch] = useState("");
+  const [cryptoLoading, setCryptoLoading] = useState(false);
 
-  useEffect(() => { loadData(); }, [user]);
+  useEffect(() => { loadData(); loadCryptos(); }, [user]);
+
+  async function loadCryptos() {
+    setCryptoLoading(true);
+    const list = await fetchTop100Cryptos();
+    setCryptoList(list);
+    setCryptoLoading(false);
+  }
 
   async function loadData() {
     setLoading(true);
@@ -377,19 +405,42 @@ function SquadraPage({ user }) {
             <div className="field"><label>Cognome</label><input placeholder="Rossi" value={form.cognome} onChange={e => setForm(p => ({ ...p, cognome: e.target.value }))} /></div>
             <div className="field full"><label>Nome Squadra</label><input placeholder="Moon Hunters" value={form.squadra} onChange={e => setForm(p => ({ ...p, squadra: e.target.value }))} /></div>
             <div className="field full">
-              <label>Scegli 5 Crypto ({selected.length}/5)</label>
+              <label>Scegli 5 Crypto ({selected.length}/5) {cryptoLoading && <span style={{color:"var(--muted)",fontWeight:400}}>— caricamento top 100...</span>}</label>
+              <input
+                placeholder="🔍 Cerca per nome o simbolo..."
+                value={cryptoSearch}
+                onChange={e => setCryptoSearch(e.target.value)}
+                style={{marginBottom:"0.6rem"}}
+              />
               <div className="crypto-grid">
-                {TOP_CRYPTOS.map(c => {
-                  const isSel = !!selected.find(x => x.id === c.id);
-                  const isDis = !isSel && selected.length >= 5;
-                  return (
-                    <div key={c.id} className={`crypto-chip ${isSel ? "selected" : ""} ${isDis ? "disabled" : ""}`} onClick={() => !isDis && toggleCrypto(c)}>
-                      <div className="crypto-sym">{c.symbol}</div>
-                      <div className="crypto-name">{c.name}</div>
-                    </div>
-                  );
-                })}
+                {cryptoList
+                  .filter(c => {
+                    const q = cryptoSearch.toLowerCase();
+                    return !q || c.symbol.toLowerCase().includes(q) || c.name.toLowerCase().includes(q);
+                  })
+                  .map(c => {
+                    const isSel = !!selected.find(x => x.id === c.id);
+                    const isDis = !isSel && selected.length >= 5;
+                    return (
+                      <div key={c.id} className={`crypto-chip ${isSel ? "selected" : ""} ${isDis ? "disabled" : ""}`} onClick={() => !isDis && toggleCrypto(c)}>
+                        <div className="crypto-sym">{c.symbol}</div>
+                        <div className="crypto-name">{c.name}</div>
+                      </div>
+                    );
+                  })}
               </div>
+              {selected.length > 0 && (
+                <div style={{marginTop:"0.8rem",padding:"0.7rem 1rem",background:"rgba(43,217,195,0.06)",border:"1px solid rgba(43,217,195,0.2)",borderRadius:"8px"}}>
+                  <div style={{fontSize:"0.72rem",color:"var(--muted)",fontFamily:"JetBrains Mono",textTransform:"uppercase",letterSpacing:"1px",marginBottom:"0.4rem"}}>Selezionate</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:"0.4rem"}}>
+                    {selected.map(c => (
+                      <span key={c.id} onClick={() => toggleCrypto(c)} style={{padding:"0.3rem 0.7rem",borderRadius:"6px",background:"rgba(43,217,195,0.12)",border:"1px solid rgba(43,217,195,0.3)",fontSize:"0.82rem",fontFamily:"JetBrains Mono",fontWeight:700,color:"var(--accent)",cursor:"pointer"}} title="Clicca per rimuovere">
+                        {c.symbol} ✕
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           <div className="flex mt">
