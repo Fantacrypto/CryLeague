@@ -52,7 +52,7 @@ function calcScore(cryptos, startPrices, endPrices) {
 
 // Logo SVG del brand
 const LogoSVG = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="265 80 1090 175" style={{width:"100%",maxWidth:"520px",height:"auto",display:"block",margin:"0 auto"}}>
+  <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="250 20 1140 240" style={{width:"100%",maxWidth:"600px",height:"auto",display:"block",margin:"0 auto"}}>
     <defs>
       <filter x="0%" y="0%" width="100%" height="100%" id="d44ad22488"><feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" colorInterpolationFilters="sRGB"/></filter>
       <filter x="0%" y="0%" width="100%" height="100%" id="7aa3a021ed"><feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.2126 0.7152 0.0722 0 0" colorInterpolationFilters="sRGB"/></filter>
